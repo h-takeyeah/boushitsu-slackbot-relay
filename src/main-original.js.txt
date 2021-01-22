@@ -4,16 +4,16 @@
  * to Beebotte through Beebotte REST API.
  */
 
-const aBBT_CHANNEL_TOKEN = 'token_xxxxxxxxx'
-const aBBT_CHANNEL = 'xxxx'
-const aBBT_RESOURCE = 'xxx'
+const BBT_CHANNEL_TOKEN = 'token_xxxxxxxxx'
+const BBT_CHANNEL = 'xxxx'
+const BBT_RESOURCE = 'xxx'
 
-const adoGet = () => {
+const doGet = () => {
   return ContentService.createTextOutput('You have to request with payload data and use POST method.')
 }
 
 // See. https://developers.google.com/apps-script/guides/web
-const adoPost = (e) => {
+const doPost = (e) => {
   let contents = e.postData.contents
   // Make sure that contents is string
   if (typeof e !== 'string') {
@@ -58,7 +58,7 @@ const adoPost = (e) => {
   Parse query string such as 'hoge=fuga&foo=bar' and convert to key & value object.
   See. https://stackoverflow.com/questions/8486099/how-do-i-parse-a-url-query-parameters-in-javascript
 */
-const aparseQuery = q => {
+const parseQuery = q => {
   if (typeof q === 'string') {
     let query = q.substr(1)
     let result = {}
