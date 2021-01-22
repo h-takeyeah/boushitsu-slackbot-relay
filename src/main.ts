@@ -1,3 +1,5 @@
+import URLFetchRequestOptions = GoogleAppsScript.URL_Fetch.URLFetchRequestOptions
+
 const BBT_CHANNEL_TOKEN = 'token_xxxxx'
 const BBT_CHANNEL = 'xxxx'
 const BBT_RESOURCE = 'xxx'
@@ -40,30 +42,18 @@ const doPost = (e: PostEventObject) => {
     }
   }
 
-  // NG code
-  // The compiler infers 'method' is string,
-  // but the property is expected to be type
-  // of URLFetchRequestOptions.
-  // So, it throws error: ts2345.
-  // const options = {
-  //   'contentType': 'application/json',
-  //   'headers': {
-  //     'X-Auth-Token': BBT_CHANNEL_TOKEN
-  //   },
-  //   'method': 'post',
-  //   'payload': JSON.stringify(postBody)
-  // }
-
-  // See. https://beebotte.com/docs/restapi
-  const url = `https://api.beebotte.com/v1/data/publish/${BBT_CHANNEL}/${BBT_RESOURCE}`
-  UrlFetchApp.fetch(url, {
+  const options: URLFetchRequestOptions = {
     contentType: 'application/json',
     headers: {
       'X-Auth-Token': BBT_CHANNEL_TOKEN
     },
     method: 'post',
     payload: JSON.stringify(postBody)
-  }) // Request
+  }
+
+  // See. https://beebotte.com/docs/restapi
+  const url = `https://api.beebotte.com/v1/data/publish/${BBT_CHANNEL}/${BBT_RESOURCE}`
+  UrlFetchApp.fetch(url, options) // Request
   return ContentService.createTextOutput() // An empty responce to Slack slash command.
 }
 
