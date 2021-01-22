@@ -3,7 +3,7 @@ const BBT_CHANNEL_TOKEN = 'token_xxxxx'
 const BBT_CHANNEL = 'xxxx'
 const BBT_RESOURCE = 'xxx'
 
-type PostEventObject = {
+type PostEvent = {
   queryString: string,
   parameter: object,
   parameters: object,
@@ -23,7 +23,7 @@ const doGet = () => {
 }
 
 // See. https://developers.google.com/apps-script/guides/web
-const doPost = (e: PostEventObject) => {
+const doPost = (e: PostEvent) => {
   const queries: any = parseQuery(e.postData.contents)
   if(!Object.keys(queries).length) {
     return ContentService.createTextOutput('Your request was not understood.')
