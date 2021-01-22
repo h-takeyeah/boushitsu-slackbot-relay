@@ -1,5 +1,7 @@
 import URLFetchRequestOptions = GoogleAppsScript.URL_Fetch.URLFetchRequestOptions
-import { BBT_CHANNEL,BBT_CHANNEL_TOKEN,BBT_RESOURCE } from './env'
+const BBT_CHANNEL_TOKEN = 'token_xxxxx'
+const BBT_CHANNEL = 'xxxx'
+const BBT_RESOURCE = 'xxx'
 
 type PostEventObject = {
   queryString: string,
