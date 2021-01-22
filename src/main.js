@@ -1,0 +1,72 @@
+/**
+ * This code handles POST requests called by the slash command; '/boushitsu'.
+ * Receiving a request from Slack, respond immidiately, and pass the payload
+ * to Beebotte through Beebotte REST API.
+ */
+
+const aBBT_CHANNEL_TOKEN = 'token_xxxxxxxxx'
+const aBBT_CHANNEL = 'xxxx'
+const aBBT_RESOURCE = 'xxx'
+
+const adoGet = () => {
+  return ContentService.createTextOutput('You have to request with payload data and use POST method.')
+}
+
+// See. https://developers.google.com/apps-script/guides/web
+const adoPost = (e) => {
+  let contents = e.postData.contents
+  // Make sure that contents is string
+  if (typeof e !== 'string') {
+    if (typeof e === 'object') {
+      contents = JSON.stringify(contents)
+    } else {
+      return ContentService.createTextOutput('Your request was not understood.')
+    }
+  }
+
+  const queries = parseQuery(contents)
+  if (!queries) return ContentService.createTextOutput('Your request was not understood.')
+
+  /*
+    Collect the attributes required to post an ephemeral messaage.
+    See. https://api.slack.com/methods/chat.postEphemeral
+  */
+  const postBody = {
+    data: {
+      text: queries.text,
+      channel: queries.channel_id,
+      user: queries.user_id
+    }
+  }
+
+  // See. https://beebotte.com/docs/restapi
+  const options = {
+    'contentType': 'application/json',
+    'headers': {
+      'X-Auth-Token': BBT_CHANNEL_TOKEN
+    },
+    'method': 'post',
+    'payload': JSON.stringify(postBody)
+  }
+  const url = `https://api.beebotte.com/v1/data/publish/${BBT_CHANNEL}/${BBT_RESOURCE}`
+  UrlFetchApp.fetch(url, options) // Request
+
+  return ContentService.createTextOutput() // An empty responce to Slack slash command.
+}
+
+/*
+  Parse query string such as 'hoge=fuga&foo=bar' and convert to key & value object.
+  See. https://stackoverflow.com/questions/8486099/how-do-i-parse-a-url-query-parameters-in-javascript
+*/
+const aparseQuery = q => {
+  if (typeof q === 'string') {
+    let query = q.substr(1)
+    let result = {}
+    query.split('&').forEach(part => {
+      let item = part.split('=')
+      result[item[0]] = decodeURIComponent(item[1])
+    })
+    return result
+  }
+  return null
+}

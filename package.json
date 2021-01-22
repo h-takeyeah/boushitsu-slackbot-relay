@@ -1,0 +1,12 @@
+{
+  "name": "boushitsu-slackbot-relay",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@google/clasp": "^2.3.0"
+  },
+  "devDependencies": {
+    "@types/google-apps-script": "^1.0.21"
+  }
+}
