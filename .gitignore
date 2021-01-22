@@ -1,3 +1,4 @@
 node_modules
-src/appsscript.json
 .clasp.json
+src/appsscript.json
+src/env.ts
