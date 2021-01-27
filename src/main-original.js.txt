@@ -1,12 +1,12 @@
 /**
  * This code handles POST requests called by the slash command; '/boushitsu'.
- * Receiving a request from Slack, respond immidiately, and pass the payload
+ * Receiving a request from Slack, respond immidiately, and publish the payload
  * to Beebotte through Beebotte REST API.
  */
 
-const BBT_CHANNEL_TOKEN = 'token_xxxxxxxxx'
-const BBT_CHANNEL = 'xxxx'
-const BBT_RESOURCE = 'xxx'
+const BBT_CHANNEL_TOKEN = 'token_VntapVQeKZk7dHhc'
+const BBT_CHANNEL = 'boushitsu_slackbot'
+const BBT_RESOURCE = 'res'
 
 const doGet = () => {
   return ContentService.createTextOutput('You have to request with payload data and use POST method.')
@@ -14,17 +14,8 @@ const doGet = () => {
 
 // See. https://developers.google.com/apps-script/guides/web
 const doPost = (e) => {
-  let contents = e.postData.contents
-  // Make sure that contents is string
-  if (typeof e !== 'string') {
-    if (typeof e === 'object') {
-      contents = JSON.stringify(contents)
-    } else {
-      return ContentService.createTextOutput('Your request was not understood.')
-    }
-  }
-
-  const queries = parseQuery(contents)
+  const queries = parseQuery(e.postData.contents)
+  // Make sure that queries has positive length
   if (!queries) return ContentService.createTextOutput('Your request was not understood.')
 
   /*
@@ -59,11 +50,11 @@ const doPost = (e) => {
   See. https://stackoverflow.com/questions/8486099/how-do-i-parse-a-url-query-parameters-in-javascript
 */
 const parseQuery = q => {
+  // Make sure that contents is string
   if (typeof q === 'string') {
-    let query = q.substr(1)
     let result = {}
-    query.split('&').forEach(part => {
-      let item = part.split('=')
+    q.split('&').forEach(part => {
+      const item = part.split('=')
       result[item[0]] = decodeURIComponent(item[1])
     })
     return result
